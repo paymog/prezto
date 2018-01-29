@@ -64,6 +64,8 @@ alias tl="tmux ls"
 alias tk="tmux kill-session -t"
 alias rt="tmux source-file ~/.tmux.conf"
 
+# solvvy specific aliases
+alias tn="/Users/paymahnmoghadasian/solvvy/misc-scripts/src/ruby/tunnel.rb"
 
 # utility aliases
 alias grepp="grep -iIrnp"
