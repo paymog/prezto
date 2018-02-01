@@ -36,10 +36,17 @@ alias ev="$EDITOR ~/.vimrc"
 #alias vim='nvim'
 alias env='$EDITOR ~/.config/nvim/init.vim'
 
+# solarize light
 export FZF_DEFAULT_OPTS='
 --color fg:240,bg:230,hl:33,fg+:241,bg+:221,hl+:33
 --color info:33,prompt:33,pointer:166,marker:166,spinner:33
 '
+# solarized dark
+export FZF_DEFAULT_OPTS='
+--color dark,hl:33,hl+:37,fg+:235,bg+:136,fg+:254
+--color info:254,prompt:37,spinner:108,pointer:235,marker:235
+'
+
 # --files: List files that would be searched but do not search
 # --no-ignore: Do not respect .gitignore, etc...
 # --hidden: Search hidden files and folders
@@ -53,9 +60,12 @@ alias gst='git status'
 alias gaa='git add --all'
 alias gd='git diff'
 alias gco='git checkout'
+alias gcob='git checkout -b'
 alias gp='git push'
-alias gl='git pull'
-alias gc='git commit'
+alias gpu='git push -u'
+alias gf='git pull --rebase'
+alias gca='gc --amend'
+alias gb='git branch --list'
 
 # tmux aliases
 alias tnew="tmux new -s"
@@ -65,7 +75,7 @@ alias tk="tmux kill-session -t"
 alias rt="tmux source-file ~/.tmux.conf"
 
 # solvvy specific aliases
-alias tn="/Users/paymahnmoghadasian/solvvy/misc-scripts/src/ruby/tunnel.rb"
+alias tun="/Users/paymahn/solvvy/misc-scripts/src/ruby/tunnel.rb"
 
 # utility aliases
 alias grepp="grep -iIrnp"
