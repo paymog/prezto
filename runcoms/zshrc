@@ -80,6 +80,10 @@ alias tun="/Users/paymahn/solvvy/misc-scripts/src/ruby/tunnel.rb"
 # utility aliases
 alias grepp="grep -iIrnp"
 
+# virtualenv
+alias vac="source venv/bin/activate"
+alias dac="deactivate"
+
 #bindkey -e
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
