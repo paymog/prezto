@@ -27,8 +27,11 @@ unsetopt CORRECT
 export VISUAL='/usr/local/bin/vim'
 export EDITOR='/usr/local/bin/vim'
 
+alias rabc='rabbitmqctl'
+
 # aliases
 alias rz="source ~/.zshrc"
+alias rzp="source ~/.zpreztorc"
 alias ez="$EDITOR ~/.zshrc"
 alias ezp="$EDITOR ~/.zpreztorc"
 alias et="$EDITOR ~/.tmux.conf"
@@ -52,7 +55,7 @@ export FZF_DEFAULT_OPTS='
 # --hidden: Search hidden files and folders
 # --follow: Follow symlinks
 # --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 
 
 # git aliases
@@ -84,9 +87,22 @@ alias grepp="grep -iIrnp"
 alias vac="source venv/bin/activate"
 alias dac="deactivate"
 
+function light() {
+  sed -i '' "s/background=dark/background=light/g" ~/.vimrc
+  sed -i '' "s/solarized '256'/solarized 'light'/g" ~/.tmux.conf
+  tmux source-file ~/.tmux.conf
+}
+function dark() {
+  sed -i '' "s/background=light/background=dark/g" ~/.vimrc
+  sed -i '' "s/solarized 'light'/solarized '256'/g" ~/.tmux.conf
+  tmux source-file ~/.tmux.conf
+}
+
 #bindkey -e
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export AIRFLOW_HOME="~/Desktop/airflow"
