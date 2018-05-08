@@ -37,7 +37,6 @@ alias ezp="$EDITOR ~/.zpreztorc"
 alias et="$EDITOR ~/.tmux.conf"
 alias ev="$EDITOR ~/.vimrc"
 #alias vim='nvim'
-alias env='$EDITOR ~/.config/nvim/init.vim'
 
 # solarize light
 export FZF_DEFAULT_OPTS='
@@ -64,11 +63,13 @@ alias gaa='git add --all'
 alias gd='git diff'
 alias gco='git checkout'
 alias gcob='git checkout -b'
+alias gcom='git checkout master'
 alias gp='git push'
 alias gpu='git push -u'
 alias gf='git pull --rebase'
 alias gca='gc --amend'
 alias gb='git branch --list'
+alias grm='git rebase master'
 
 # tmux aliases
 alias tnew="tmux new -s"
@@ -86,6 +87,21 @@ alias grepp="grep -iIrnp"
 # virtualenv
 alias vac="source venv/bin/activate"
 alias dac="deactivate"
+
+# docker
+alias d="docker"
+alias dc="docker-compose"
+alias dzk="docker-compose kill"
+
+# kubernetes
+alias k="kubectl"
+alias mk="minikube"
+alias kgp="k get pods"
+alias kl="k logs"
+alias kdp="k delete pods -l service=scheduler"
+
+# envsubst isn't linked when installed with brew
+alias envsubst="/usr/local/opt/gettext/bin/envsubst"
 
 function light() {
   sed -i '' "s/background=dark/background=light/g" ~/.vimrc
@@ -105,4 +121,4 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export AIRFLOW_HOME="~/Desktop/airflow"
+export AIRFLOW_HOME="/usr/local/airflow"
