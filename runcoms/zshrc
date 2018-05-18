@@ -98,7 +98,13 @@ alias k="kubectl"
 alias mk="minikube"
 alias kgp="k get pods"
 alias kl="k logs"
-alias kdp="k delete pods -l service=scheduler"
+alias kdp="k delete pod"
+alias up="kubectl config use-context scheduler-prod"
+alias ud="kubectl config use-context scheduler-dev"
+alias ul="kubectl config use-context mk-scheduler"
+alias dd="ud && k apply -f kubernetes-dev.yml"
+alias dp="up && k apply -f kubernetes-prod.yml"
+
 
 # envsubst isn't linked when installed with brew
 alias envsubst="/usr/local/opt/gettext/bin/envsubst"
