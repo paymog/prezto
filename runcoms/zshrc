@@ -56,6 +56,7 @@ export FZF_DEFAULT_OPTS='
 # --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 
+alias rg="rg -i"
 
 # git aliases
 alias gst='git status'
