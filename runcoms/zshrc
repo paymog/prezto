@@ -71,6 +71,7 @@ alias gf='git pull --rebase'
 alias gca='gc --amend'
 alias gb='git branch --list'
 alias grm='git rebase master'
+alias gro='git rebase --onto'
 
 # tmux aliases
 alias tnew="tmux new -s"
