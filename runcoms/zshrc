@@ -15,6 +15,7 @@ fi
 # add genymotion to my path for react native android simulation
 export PATH=$PATH:/Applications/Genymotion.app/Contents/MacOS/tools
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+export PATH="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin:$PATH"
 
 # vim mode
 bindkey -v
@@ -73,6 +74,7 @@ alias gf='git pull --rebase'
 alias gca='gc --amend'
 alias gb='git branch --list'
 alias grm='git rebase master'
+alias grd='git rebase develop'
 alias gro='git rebase --onto'
 alias gfp="git fetch -p"
 
@@ -116,10 +118,15 @@ alias ul="kubectl config use-context mk-scheduler"
 alias umk="kubectl config use-context minikube"
 alias dd="ud && k apply -f kubernetes-dev.yml"
 alias dp="up && k apply -f kubernetes-prod.yml"
+alias stm="gcloud auth login && gcloud config set project mycrocoin && gcloud container clusters get-credentials main --zone us-west1-b --project mycrocoin && kubectl config use-context mycro "
+alias stsd="gcloud auth login && gcloud config set project solvvy-dev && gcloud container clusters get-credentials kube1 && kubectl config use-context scheduler-dev"
+alias stsp="gcloud auth login && gcloud config set project solvvy-production && gcloud container clusters get-credentials main-prod && kubectl config use-context scheduler-prod"
 
 
 # envsubst isn't linked when installed with brew
 alias envsubst="/usr/local/opt/gettext/bin/envsubst"
+
+alias yaml2js="python3 -c 'import sys, yaml, json; [json.dump(y, sys.stdout, indent=4) for y in yaml.load_all(sys.stdin)]'"
 
 function light() {
   sed -i '' "s/background=dark/background=light/g" ~/.vimrc
@@ -131,6 +138,7 @@ function dark() {
   sed -i '' "s/solarized 'light'/solarized '256'/g" ~/.tmux.conf
   tmux source-file ~/.tmux.conf
 }
+
 
 #bindkey -e
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
