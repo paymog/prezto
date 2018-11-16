@@ -11,6 +11,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+fpath=(/usr/local/share/zsh-completions $fpath)
 
 # add genymotion to my path for react native android simulation
 export PATH=$PATH:/Applications/Genymotion.app/Contents/MacOS/tools
