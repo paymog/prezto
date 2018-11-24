@@ -119,7 +119,7 @@ alias ul="kubectl config use-context mk-scheduler"
 alias umk="kubectl config use-context minikube"
 alias dd="ud && k apply -f kubernetes-dev.yml"
 alias dp="up && k apply -f kubernetes-prod.yml"
-alias stm="gcloud auth login && gcloud config set project mycrocoin && gcloud container clusters get-credentials main --zone us-west1-b --project mycrocoin && kubectl config use-context mycro "
+alias stm="gcloud auth login && gcloud config set project mycrocoin && gcloud container clusters get-credentials main-clone-1 --zone us-west1-b --project mycrocoin && kubectl config use-context mycro "
 alias stsd="gcloud auth login && gcloud config set project solvvy-dev && gcloud container clusters get-credentials kube1 && kubectl config use-context scheduler-dev"
 alias stsp="gcloud auth login && gcloud config set project solvvy-production && gcloud container clusters get-credentials main-prod && kubectl config use-context scheduler-prod"
 
