@@ -13,10 +13,8 @@ fi
 # Customize to your needs...
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-# add genymotion to my path for react native android simulation
-export PATH=$PATH:/Applications/Genymotion.app/Contents/MacOS/tools
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
-export PATH="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin:$PATH"
+#export PATH="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin:$PATH"
 
 # vim mode
 bindkey -v
@@ -149,3 +147,4 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 export AIRFLOW_HOME="/usr/local/airflow"
+eval "$(pyenv init -)"
