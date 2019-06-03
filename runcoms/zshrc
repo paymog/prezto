@@ -76,6 +76,7 @@ alias grm='git rebase master'
 alias grd='git rebase develop'
 alias gro='git rebase --onto'
 alias gfp="git fetch -p"
+alias gacapf="gaa && gca --no-edit && gpf"
 
 # tmux aliases
 alias tnew="tmux new -s"
@@ -121,6 +122,9 @@ alias stm="gcloud auth login && gcloud config set project mycrocoin && gcloud co
 alias stsd="gcloud auth login && gcloud config set project solvvy-dev && gcloud container clusters get-credentials kube1 && kubectl config use-context scheduler-dev"
 alias stsp="gcloud auth login && gcloud config set project solvvy-production && gcloud container clusters get-credentials main-prod && kubectl config use-context scheduler-prod"
 
+alias pm='gd --name-only HEAD~1 | rg "api-intent" | rg "\.py" | sed -e "s/api-intent\///g"  | xargs poetry run mypy'
+alias pp='gd --name-only HEAD~1 | rg "api-intent" | rg "\.py" | sed -e "s/api-intent\///g"  | xargs poetry run pylint'
+alias pt='poetry run pytest'
 
 # envsubst isn't linked when installed with brew
 alias envsubst="/usr/local/opt/gettext/bin/envsubst"
@@ -148,3 +152,13 @@ export NVM_DIR="$HOME/.nvm"
 
 export AIRFLOW_HOME="/usr/local/airflow"
 eval "$(pyenv init -)"
+export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
+
+export NPM_TOKEN="b4bb2747-0058-4a08-9ba7-2d4fe22fead4"
+
+# android
+export ANDROID_HOME=/Users/paymahn/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools
