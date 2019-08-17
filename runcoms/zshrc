@@ -92,7 +92,7 @@ alias tun="/Users/paymahn/solvvy/misc-scripts/src/ruby/tunnel.rb"
 alias grepp="grep -iIrnp"
 
 # virtualenv
-alias vac="source venv/bin/activate"
+alias vac="source venv/bin/activate || source .venv/bin/activate"
 alias dac="deactivate"
 
 # docker
@@ -122,8 +122,8 @@ alias stm="gcloud auth login && gcloud config set project mycrocoin && gcloud co
 alias stsd="gcloud auth login && gcloud config set project solvvy-dev && gcloud container clusters get-credentials kube1 && kubectl config use-context scheduler-dev"
 alias stsp="gcloud auth login && gcloud config set project solvvy-production && gcloud container clusters get-credentials main-prod && kubectl config use-context scheduler-prod"
 
-alias pm='gd --name-only HEAD~1 | rg "api-intent" | rg "\.py" | sed -e "s/api-intent\///g"  | xargs poetry run mypy'
-alias pp='gd --name-only HEAD~1 | rg "api-intent" | rg "\.py" | sed -e "s/api-intent\///g"  | xargs poetry run pylint'
+alias pm='export CURDIR=`basename $PWD` && gd --name-only HEAD~1 | rg $CURDIR |  rg ".*\.py$" | sed -e "s/$CURDIR\///g"  | xargs poetry run mypy && unset CURDIR'
+alias pp='export CURDIR=`basename $PWD` && gd --name-only HEAD~1 | rg $CURDIR | rg ".*\.py$" | sed -e "s/$CURDIR\///g"  | xargs poetry run pylint && unset CURDIR'
 alias pt='poetry run pytest'
 
 # envsubst isn't linked when installed with brew
