@@ -162,3 +162,8 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
+source /Users/$USER/Library/Python/3.7/bin/virtualenvwrapper.sh
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.7
+export VIRTUALENVWRAPPER_VIRTUALENV=/Users/$USER/Library/Python/3.7/bin/virtualenv
+export PATH="/usr/local/opt/protobuf@3.7/bin:$PATH"
+export PATH="/usr/local/opt/node@10/bin:$PATH"
