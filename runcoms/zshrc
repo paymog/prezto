@@ -120,23 +120,13 @@ alias kgsv="k get svc"
 alias kdsv="k describe svc"
 alias kccc='k config current-context'
 alias kcuc='k config use-context'
-alias up="kubectl config use-context scheduler-prod"
-alias ud="kubectl config use-context scheduler-dev"
-alias um="kubectl config use-context mycro"
-alias ul="kubectl config use-context mk-scheduler"
 alias umk="kubectl config use-context minikube"
-alias dd="ud && k apply -f kubernetes-dev.yml"
-alias dp="up && k apply -f kubernetes-prod.yml"
-alias stm="gcloud auth login && gcloud config set project mycrocoin && gcloud container clusters get-credentials main-clone-1 --zone us-west1-b --project mycrocoin && kubectl config use-context mycro "
-alias stsd="gcloud auth login && gcloud config set project solvvy-dev && gcloud container clusters get-credentials kube1 && kubectl config use-context scheduler-dev"
-alias stsp="gcloud auth login && gcloud config set project solvvy-production && gcloud container clusters get-credentials main-prod && kubectl config use-context scheduler-prod"
-
-alias pm='export CURDIR=`basename $PWD` && gd --name-only HEAD~1 | rg $CURDIR |  rg ".*\.py$" | sed -e "s/$CURDIR\///g"  | xargs poetry run mypy && unset CURDIR'
-alias pp='export CURDIR=`basename $PWD` && gd --name-only HEAD~1 | rg $CURDIR | rg ".*\.py$" | sed -e "s/$CURDIR\///g"  | xargs poetry run pylint && unset CURDIR'
-alias pt='poetry run pytest'
+alias kprod="k --context=gke_qwil-1149_us-central1_qwil-3 --namespace=prod"
 
 # envsubst isn't linked when installed with brew
 alias envsubst="/usr/local/opt/gettext/bin/envsubst"
+
+alias watch='watch '
 
 alias yaml2js="python3 -c 'import sys, yaml, json; [json.dump(y, sys.stdout, indent=4) for y in yaml.load_all(sys.stdin)]'"
 
@@ -171,9 +161,6 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
-source /Users/$USER/Library/Python/3.7/bin/virtualenvwrapper.sh
-export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.7
-export VIRTUALENVWRAPPER_VIRTUALENV=/Users/$USER/Library/Python/3.7/bin/virtualenv
 export PATH="/usr/local/opt/protobuf@3.7/bin:$PATH"
 export PATH="/usr/local/opt/node@10/bin:$PATH"
 
