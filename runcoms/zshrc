@@ -123,7 +123,6 @@ alias kdsv="k describe svc"
 alias kccc='k config current-context'
 alias kcuc='k config use-context'
 alias umk="kubectl config use-context minikube"
-alias kprod="k --context=gke_qwil-1149_us-central1_qwil-3 --namespace=prod"
 
 # envsubst isn't linked when installed with brew
 alias envsubst="/usr/local/opt/gettext/bin/envsubst"
@@ -210,3 +209,7 @@ export AWS_ASSUME_ROLE_TTL=1h
 # END ANSIBLE MANAGED BLOCK
 #
 export GITLAB_TOKEN='fKPXEN6QRsf2hcEhWvEs'
+
+# https://kubernetes.io/docs/tasks/tools/install-kubectl/
+source <(kubectl completion zsh)
+complete -F __start_kubectl k
