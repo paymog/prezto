@@ -2,3 +2,6 @@
 *.zwc.old
 modules/*/cache.zsh
 contrib
+
+# note instead of this gitignore see https://stackoverflow.com/questions/4348590/how-can-i-make-git-ignore-future-revisions-to-a-file
+# runcoms/workrc
