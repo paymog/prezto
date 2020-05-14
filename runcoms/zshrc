@@ -154,8 +154,6 @@ export AIRFLOW_HOME="/usr/local/airflow"
 eval "$(pyenv init -)"
 export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
 
-export NPM_TOKEN="b4bb2747-0058-4a08-9ba7-2d4fe22fead4"
-
 # android
 export ANDROID_HOME=/Users/paymahn/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
