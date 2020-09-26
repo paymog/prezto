@@ -118,6 +118,7 @@ alias kgd="k get deployments"
 alias kl="k logs"
 alias klf="kl -f"
 alias kdp="k describe pod"
+alias kdd="k describe deployment"
 alias kgsv="k get svc"
 alias kdsv="k describe svc"
 alias kccc='k config current-context'
