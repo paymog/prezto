@@ -119,8 +119,8 @@ alias kl="k logs"
 alias klf="kl -f"
 alias kdp="k describe pod"
 alias kdd="k describe deployment"
-alias kgsv="k get svc"
-alias kdsv="k describe svc"
+alias kgs="k get svc"
+alias kds="k describe svc"
 alias kccc='k config current-context'
 alias kcuc='k config use-context'
 alias umk="kubectl config use-context minikube"
@@ -151,8 +151,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export AIRFLOW_HOME="/usr/local/airflow"
-eval "$(pyenv init -)"
 export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
 
 # android
