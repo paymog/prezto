@@ -143,6 +143,10 @@ function dark() {
   tmux source-file ~/.tmux.conf
 }
 
+function kexec() {
+  k exec -it $1 /bin/bash
+}
+
 
 #bindkey -e
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
