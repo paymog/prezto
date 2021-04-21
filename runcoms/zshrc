@@ -13,9 +13,6 @@ fi
 # Customize to your needs...
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-export PATH="/usr/local/opt/python/libexec/bin:$PATH"
-#export PATH="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin:$PATH"
-
 # vim mode
 bindkey -v
 export KEYTIMEOUT=1
@@ -36,7 +33,7 @@ alias ez="$EDITOR ~/.zshrc"
 alias ezp="$EDITOR ~/.zpreztorc"
 alias et="$EDITOR ~/.tmux.conf"
 alias ev="$EDITOR ~/.vimrc"
-alias ls='ls --color=auto'
+alias ls='ls -G'
 alias dd='cd ~/dd'
 #alias vim='nvim'
 
@@ -155,16 +152,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
-
-# android
-export ANDROID_HOME=/Users/paymahn/Library/Android/sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/tools/bin
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-export PATH="/usr/local/opt/protobuf@3.7/bin:$PATH"
-export PATH="/usr/local/opt/node@10/bin:$PATH"
+export PATH=$HOME/go/bin:$PATH
 
 function revert-expand-or-complete {
   zle expand-or-complete
