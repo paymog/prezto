@@ -87,9 +87,6 @@ alias tl="tmux ls"
 alias tk="tmux kill-session -t"
 alias rt="tmux source-file ~/.tmux.conf"
 
-# solvvy specific aliases
-alias tun="/Users/paymahn/solvvy/misc-scripts/src/ruby/tunnel.rb"
-
 # utility aliases
 alias grepp="grep -iIrnp"
 
@@ -126,6 +123,9 @@ alias umk="kubectl config use-context minikube"
 alias envsubst="/usr/local/opt/gettext/bin/envsubst"
 
 alias watch='watch '
+
+alias ns="nix-shell --command zsh"
+alias pns="ns ~/plutus/shell.nix"
 
 alias yaml2js="python3 -c 'import sys, yaml, json; [json.dump(y, sys.stdout, indent=4) for y in yaml.load_all(sys.stdin)]'"
 

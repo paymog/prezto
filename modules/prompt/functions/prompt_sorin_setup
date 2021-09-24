@@ -164,6 +164,10 @@ function prompt_sorin_setup {
   # Define prompts.
   NEWLINE=$'\n'
   PROMPT='%F{1}%t%f ${SSH_TTY:+"%F{9}%n%f%F{7}@%f%F{3}%m%f "}%F{4}%d%f '
+  if [[ -v IN_NIX_SHELL ]]; then
+    PROMPT+='(nix) '
+  fi
+
   PROMPT+='$python_info[virtualenv]${editor_info[overwrite]}%(?:: %F{1}'
   PROMPT+=${show_return}
   PROMPT+='%f)${VIM:+" %B%F{6}V%f%b"}${_prompt_sorin_git}'
