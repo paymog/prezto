@@ -74,3 +74,4 @@ fi
 TMPPREFIX="${TMPDIR%/}/zsh"
 
 export PATH="$HOME/.poetry/bin:$PATH"
+eval "$(pyenv init --path)"
