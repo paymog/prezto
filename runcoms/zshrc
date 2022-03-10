@@ -10,6 +10,10 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+autoload -Uz compinit
+compinit
+
+
 # Customize to your needs...
 fpath=(/usr/local/share/zsh-completions $fpath)
 
@@ -173,6 +177,6 @@ zle -N expand-or-complete-with-indicator revert-expand-or-complete
 
 # https://kubernetes.io/docs/tasks/tools/install-kubectl/
 source <(kubectl completion zsh)
-complete -F __start_kubectl k
+compdef __start_kubectl k
 
 source ~/.workrc
