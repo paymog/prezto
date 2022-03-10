@@ -21,8 +21,8 @@ export KEYTIMEOUT=1
 unsetopt CORRECT
 
 # vim default editor
-export VISUAL='/usr/local/bin/vim'
-export EDITOR='/usr/local/bin/vim'
+export VISUAL=$(which vim)
+export EDITOR=$(which vim)
 
 alias rabc='rabbitmqctl'
 
