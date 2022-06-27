@@ -35,7 +35,7 @@ alias rz="source ~/.zshrc"
 alias rzp="source ~/.zpreztorc"
 alias ez="$EDITOR ~/.zshrc"
 alias ezp="$EDITOR ~/.zpreztorc"
-alias et="$EDITOR ~/.tmux.conf"
+alias etc="$EDITOR ~/.tmux.conf"
 alias ev="$EDITOR ~/.vimrc"
 alias ls='ls -G'
 alias dd='cd ~/dd'
@@ -180,6 +180,4 @@ source <(kubectl completion zsh)
 compdef __start_kubectl k
 
 source ~/.workrc
-
-unalias rm
-export PATH=~/.meteor:$PATH
+eval "$(pyenv virtualenv-init -)"
