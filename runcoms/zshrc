@@ -68,7 +68,7 @@ alias gaa='git add --all'
 alias gd='git diff'
 alias gco='git checkout --recurse-submodules'
 alias gcob='git checkout -b'
-alias gcom='git checkout master --recurse-submodules'
+alias gcom='git checkout main --recurse-submodules'
 alias gcod='git checkout develop'
 alias gp='git push'
 alias gpu='git push -u'
@@ -77,12 +77,12 @@ alias gptuf='git push upstream -f'
 alias gf='git pull --rebase'
 alias gca='gc --amend'
 alias gb='git branch --list'
-alias grm='git rebase master'
+alias grm='git rebase main'
 alias grd='git rebase develop'
 alias gro='git rebase --onto'
 alias gfp="git fetch -p"
 alias gacapf="gaa && gca --no-edit && gpf"
-alias gfu="git fetch upstream && git checkout master && git merge upstream/master && git push"
+alias gfu="git fetch upstream && git checkout main && git merge upstream/main && git push"
 
 # tmux aliases
 alias tnew="tmux new -s"
