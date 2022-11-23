@@ -1,0 +1,2 @@
+alias ud='kcuc arn:aws:eks:us-west-2:716091368358:cluster/mercury-dev'
+alias up='kcuc arn:aws:eks:us-west-2:301417190815:cluster/mercury-prod'

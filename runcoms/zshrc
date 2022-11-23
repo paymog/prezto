@@ -110,6 +110,7 @@ alias clc="docker exec -t -i $(docker ps -aq --last 1) /bin/bash"
 
 # kubernetes
 alias k="kubectl"
+alias kg="k get"
 alias mk="minikube"
 alias kgp="k get pods"
 alias kgd="k get deployments"
@@ -119,9 +120,13 @@ alias kdp="k describe pod"
 alias kdd="k describe deployment"
 alias kgs="k get svc"
 alias kds="k describe svc"
+alias kdn="k describe node"
 alias kccc='k config current-context'
 alias kcuc='k config use-context'
 alias umk="kubectl config use-context minikube"
+alias kd="k describe"
+alias kdpv="kd pv"
+alias kdpvc="kd pvc"
 
 # envsubst isn't linked when installed with brew
 alias envsubst="/usr/local/opt/gettext/bin/envsubst"
