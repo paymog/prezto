@@ -100,8 +100,8 @@ alias dac="deactivate"
 
 # docker
 alias d="docker"
-alias dc="docker-compose"
-alias dzk="docker-compose kill"
+alias dc="docker compose"
+alias dzk="docker compose kill"
 
 # this is a doozie. The inner command gets the container id of the last run
 # container
