@@ -161,11 +161,42 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export PATH=$HOME/go/bin:$PATH
+# automatically call nvm use when changing dirs
+autoload -U add-zsh-hook
+
+load-nvmrc() {
+  local nvmrc_path
+  nvmrc_path="$(nvm_find_nvmrc)"
+
+  if [ -n "$nvmrc_path" ]; then
+    local nvmrc_node_version
+    nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+      nvm install
+    elif [ "$nvmrc_node_version" != "$(nvm version)" ]; then
+      nvm use
+    fi
+  elif [ -n "$(PWD=$OLDPWD nvm_find_nvmrc)" ] && [ "$(nvm version)" != "$(nvm version default)" ]; then
+    echo "Reverting to nvm default version"
+    nvm use default
+  fi
+}
+
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
+
+
+export PATH=$HOME/go/bin:$HOME/.cargo/bin:$PATH
 
 # pyenv stuff https://stackoverflow.com/a/66483524/1489726
 export PATH="$HOME/.pyenv/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"
+
+# scala
+export PATH="/opt/homebrew/opt/scala@2.12/bin:$PATH"
+
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home"
 
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
@@ -184,5 +215,7 @@ zle -N expand-or-complete-with-indicator revert-expand-or-complete
 source <(kubectl completion zsh)
 compdef __start_kubectl k
 
-source ~/.workrc
 eval "$(pyenv virtualenv-init -)"
+eval "$(github-copilot-cli alias -- "$0")"
+
+source ~/.workrc

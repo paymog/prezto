@@ -1,2 +1,7 @@
 alias ud='kcuc arn:aws:eks:us-west-2:716091368358:cluster/mercury-dev'
 alias up='kcuc arn:aws:eks:us-west-2:301417190815:cluster/mercury-prod'
+
+alias udd='ud && kubens default'
+alias uds='ud && kubens strick-dev'
+alias upd='up && kubens default'
+alias ups='up && kubens strick-prod'
