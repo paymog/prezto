@@ -218,4 +218,13 @@ compdef __start_kubectl k
 eval "$(pyenv virtualenv-init -)"
 eval "$(github-copilot-cli alias -- "$0")"
 
+unalias rm
+
 source ~/.workrc
+
+# bun completions
+[ -s "/Users/paymahn/.bun/_bun" ] && source "/Users/paymahn/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
