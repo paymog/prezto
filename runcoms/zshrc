@@ -191,7 +191,7 @@ export PATH=$HOME/go/bin:$HOME/.cargo/bin:$PATH
 
 # pyenv stuff https://stackoverflow.com/a/66483524/1489726
 export PATH="$HOME/.pyenv/bin:$PATH"
-export PATH="/usr/local/bin:$PATH"
+# export PATH="/usr/local/bin:$PATH"
 
 # scala
 export PATH="/opt/homebrew/opt/scala@2.12/bin:$PATH"
@@ -228,3 +228,17 @@ source ~/.workrc
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+export PATH=/Users/paymahn/.groundcover/bin:${PATH}
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+export PATH="/opt/homebrew/opt/mysql@8.0/bin:$PATH"
+
+eval "$(rbenv init -)"
+
+# pnpm
+export PNPM_HOME="/Users/paymahn/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
