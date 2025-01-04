@@ -1,3 +1,5 @@
+# Add deno completions to search path
+if [[ ":$FPATH:" != *":/Users/paymahn/.zsh/completions:"* ]]; then export FPATH="/Users/paymahn/.zsh/completions:$FPATH"; fi
 #
 # Executes commands at the start of an interactive session.
 #
@@ -113,6 +115,7 @@ alias k="kubectl"
 alias kg="k get"
 alias mk="minikube"
 alias kgp="k get pods"
+alias kgpy="k get pods -o yaml"
 alias kgd="k get deployments"
 alias kl="k logs"
 alias klf="kl -f"
@@ -216,7 +219,6 @@ source <(kubectl completion zsh)
 compdef __start_kubectl k
 
 eval "$(pyenv virtualenv-init -)"
-eval "$(github-copilot-cli alias -- "$0")"
 
 unalias rm
 
@@ -244,3 +246,4 @@ esac
 # pnpm end
 #
 export PATH=$PATH:/Users/paymahn/.linkerd2/bin
+. "/Users/paymahn/.deno/env"
