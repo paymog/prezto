@@ -42,6 +42,11 @@ alias ev="$EDITOR ~/.vimrc"
 alias ls='ls -G'
 alias dd='cd ~/dd'
 #alias vim='nvim'
+#
+alias ubd='kcuc gke_bloomnode_us-east1-b_bloomnode-cluster-e6eadd7'
+
+source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
+
 
 # solarize light
 export FZF_DEFAULT_OPTS='
@@ -238,12 +243,31 @@ export PATH="/opt/homebrew/opt/mysql@8.0/bin:$PATH"
 eval "$(rbenv init -)"
 
 # pnpm
-export PNPM_HOME="/Users/paymahn/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
+#export PNPM_HOME="/Users/paymahn/Library/pnpm"
+#case ":$PATH:" in
+  #*":$PNPM_HOME:"*) ;;
+  #*) export PATH="$PNPM_HOME:$PATH" ;;
+#esac
 # pnpm end
 #
 export PATH=$PATH:/Users/paymahn/.linkerd2/bin
 . "/Users/paymahn/.deno/env"
+
+# Add libpq to PATH
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+# Update LDFLAGS to include libpq
+export LDFLAGS="-L/opt/homebrew/opt/libpq/lib $LDFLAGS"
+
+# Update CPPFLAGS to include libpq
+export CPPFLAGS="-I/opt/homebrew/opt/libpq/include $CPPFLAGS"
+
+# Set PKG_CONFIG_PATH for libpq
+export PKG_CONFIG_PATH="/opt/homebrew/opt/libpq/lib/pkgconfig:$PKG_CONFIG_PATH"
+
+# Created by `pipx` on 2025-02-07 20:42:01
+export PATH="$PATH:/Users/paymahn/.local/bin"
+
+# Added by Windsurf
+export PATH="/Users/paymahn/.codeium/windsurf/bin:$PATH"
+export PATH="/Users/paymahn/.foundry/bin:$PATH"

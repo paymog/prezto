@@ -80,3 +80,6 @@ export PATH="$PATH:/Users/paymahn/Library/Application Support/Coursier/bin"
 
 # Added by OrbStack: command-line tools and integration
 source ~/.orbstack/shell/init.zsh 2>/dev/null || :
+
+# Created by `pipx` on 2025-02-07 20:42:01
+export PATH="$PATH:/Users/paymahn/.local/bin"
