@@ -87,9 +87,6 @@ alias tl="tmux ls"
 alias tk="tmux kill-session -t"
 alias rt="tmux source-file ~/.tmux.conf"
 
-# solvvy specific aliases
-alias tun="/Users/paymahn/solvvy/misc-scripts/src/ruby/tunnel.rb"
-
 # utility aliases
 alias grepp="grep -iIrnp"
 
@@ -163,6 +160,8 @@ zle -N expand-or-complete-with-indicator revert-expand-or-complete
 
 
 # https://kubernetes.io/docs/tasks/tools/install-kubectl/
-source <(kubectl completion zsh)
-complete -F __start_kubectl k
+if command -v kubectl &> /dev/null; then
+  source <(kubectl completion zsh)
+  complete -F __start_kubectl k
+fi
 
