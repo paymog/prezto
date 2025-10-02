@@ -93,7 +93,7 @@ alias gfu="git fetch upstream && git checkout main && git merge upstream/main &&
 
 # tmux aliases
 alias tnew="tmux new -s"
-alias ta="tmux a -t"
+alias ta="tmux a -d -t"
 alias tl="tmux ls"
 alias tk="tmux kill-session -t"
 alias rt="tmux source-file ~/.tmux.conf"
