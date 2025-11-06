@@ -251,7 +251,7 @@ eval "$(rbenv init -)"
 # pnpm end
 #
 export PATH=$PATH:/Users/paymahn/.linkerd2/bin
-. "/Users/paymahn/.deno/env"
+[ -f "$HOME/.deno/env" ] && . "$HOME/.deno/env"
 
 # Add libpq to PATH
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
