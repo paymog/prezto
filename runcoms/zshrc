@@ -27,8 +27,8 @@ export KEYTIMEOUT=1
 unsetopt CORRECT
 
 # vim default editor
-export VISUAL=$(which vim)
-export EDITOR=$(which vim)
+export VISUAL=$(which nvim)
+export EDITOR=$(which nvim)
 
 alias rabc='rabbitmqctl'
 
@@ -222,6 +222,14 @@ zle -N expand-or-complete-with-indicator revert-expand-or-complete
 # https://kubernetes.io/docs/tasks/tools/install-kubectl/
 source <(kubectl completion zsh)
 compdef __start_kubectl k
+
+# ET (Eternal Terminal) autocomplete from SSH config
+_et_hosts() {
+  local hosts
+  hosts=($(grep "^Host " ~/.ssh/config | grep -v "[*?]" | awk '{print $2}'))
+  _describe 'hosts' hosts
+}
+compdef _et_hosts et
 
 eval "$(pyenv virtualenv-init -)"
 
