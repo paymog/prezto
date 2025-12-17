@@ -12,6 +12,9 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+# asdf version manager
+[ -f /opt/homebrew/opt/asdf/libexec/asdf.sh ] && . /opt/homebrew/opt/asdf/libexec/asdf.sh
+
 autoload -Uz compinit
 compinit
 
@@ -31,6 +34,8 @@ export VISUAL=$(which nvim)
 export EDITOR=$(which nvim)
 
 alias rabc='rabbitmqctl'
+
+alias codex='codex --sandbox danger-full-access'
 
 # aliases
 alias rz="source ~/.zshrc"
