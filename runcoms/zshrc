@@ -241,6 +241,7 @@ eval "$(pyenv virtualenv-init -)"
 unalias rm
 
 source ~/.workrc
+[ -f ~/.secrets ] && source ~/.secrets
 
 # bun completions
 [ -s "/Users/paymahn/.bun/_bun" ] && source "/Users/paymahn/.bun/_bun"
