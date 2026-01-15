@@ -81,7 +81,7 @@ alias gd='git diff'
 alias gco='git checkout --recurse-submodules'
 alias gcob='git checkout -b'
 alias gcom='git checkout main --recurse-submodules'
-alias gcod='git checkout develop'
+alias gcod='git checkout dev'
 alias gp='git push'
 alias gpu='git push -u'
 alias gptu='git push upstream'
@@ -266,6 +266,7 @@ eval "$(rbenv init -)"
 #
 export PATH=$PATH:/Users/paymahn/.linkerd2/bin
 [ -f "$HOME/.deno/env" ] && . "$HOME/.deno/env"
+export PATH="$HOME/.deno/bin:$PATH"
 
 # Add libpq to PATH
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
