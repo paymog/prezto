@@ -9,3 +9,4 @@ alias uds='ud && kubens strick-dev'
 alias upd='up && kubens default'
 alias uped='upe && kubens default'
 alias ups='up && kubens strick-prod'
+export ENABLE_CLAUDEAI_MCP_SERVERS=false

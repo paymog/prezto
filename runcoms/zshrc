@@ -48,7 +48,7 @@ alias ls='ls -G'
 alias dd='cd ~/dd'
 #alias vim='nvim'
 #
-alias ubd='kcuc gke_bloomnode_us-east1-b_bloomnode-cluster-e6eadd7'
+alias ubp='kcuc gke_basira-491203_us-east1-b_basira-prod'
 
 source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
 
@@ -90,7 +90,7 @@ alias gf='git pull --rebase'
 alias gca='gc --amend'
 alias gb='git branch --list'
 alias grm='git rebase main'
-alias grd='git rebase develop'
+alias grd='git rebase dev'
 alias gro='git rebase --onto'
 alias gfp="git fetch -p"
 alias gacapf="gaa && gca --no-edit && gpf"
@@ -239,6 +239,7 @@ compdef _et_hosts et
 eval "$(pyenv virtualenv-init -)"
 
 unalias rm
+unalias gws
 
 source ~/.workrc
 [ -f ~/.secrets ] && source ~/.secrets
@@ -290,3 +291,8 @@ export PATH="/Users/paymahn/.foundry/bin:$PATH"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+source /Users/paymahn/.daytona.completion_script.zsh
+
+# Darkbloom
+export PATH="$HOME/.darkbloom/bin:$PATH"
