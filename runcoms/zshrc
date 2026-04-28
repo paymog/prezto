@@ -288,6 +288,10 @@ export PATH="$PATH:/Users/paymahn/.local/bin"
 export PATH="/Users/paymahn/.codeium/windsurf/bin:$PATH"
 export PATH="/Users/paymahn/.foundry/bin:$PATH"
 
+# Linux ~/.local/bin (cross-platform)
+export PATH="$HOME/.local/bin:$PATH"
+[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
