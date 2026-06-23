@@ -164,7 +164,12 @@ zstyle ':prezto:module:prompt' theme 'sorin'
 #
 
 # Auto set the tab and window titles.
-# zstyle ':prezto:module:terminal' auto-title 'yes'
+# 'always' (not 'yes') is required so titles are set even inside tmux/screen.
+# Without this the pane_title stays empty under tmux, which corrupts
+# tmux-resurrect saves: its tab-delimited save format collapses the empty
+# title field on read, shifting the directory column so panes restore to
+# $HOME instead of their real cwd. A non-empty cwd title avoids the collapse.
+zstyle ':prezto:module:terminal' auto-title 'always'
 
 # Set the window title format.
 # zstyle ':prezto:module:terminal:window-title' format '%n@%m: %s'
