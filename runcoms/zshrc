@@ -239,7 +239,6 @@ compdef _et_hosts et
 eval "$(pyenv virtualenv-init -)"
 
 unalias rm 2>/dev/null
-unalias gws 2>/dev/null
 
 source ~/.workrc
 [ -f ~/.secrets.personal ] && source ~/.secrets.personal
@@ -251,7 +250,6 @@ source ~/.workrc
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-export PATH=/Users/paymahn/.groundcover/bin:${PATH}
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export PATH="/opt/homebrew/opt/mysql@8.0/bin:$PATH"
 
@@ -313,9 +311,8 @@ export DAYTONA_API_URL="https://app.daytona.io/api"
 # Pin Claude Code version — disable auto-update to dodge tmux TUI render bug (re-enable once fixed)
 export DISABLE_AUTOUPDATER=1
 
-# omp memory routing (INFRA-4687): goldsky repos use the shared Hindsight bank,
-# everything else stays on the local mnemopi backend. The overlay carries the
-# hindsight backend + apiUrl + token; the global default is mnemopi.
+# omp memory routing: default = personal local Hindsight (http://127.0.0.1:8888).
+# Under ~/code/goldskyio, inject goldsky-hindsight.yml → prod Hindsight + token.
 omp() {
   local overlay="$HOME/.omp/goldsky-hindsight.yml"
   # --config is a root-only flag; subcommands (update, commit, config, ...)
