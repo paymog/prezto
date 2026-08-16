@@ -356,3 +356,15 @@ _sinatra_secrets() {
 }
 add-zsh-hook chpwd _sinatra_secrets
 _sinatra_secrets
+
+# >>> grok installer >>>
+export PATH="$HOME/.grok/bin:$PATH"
+fpath=(~/.grok/completions/zsh $fpath)
+autoload -Uz compinit && compinit -C
+# <<< grok installer <<<
+
+# Added by Turbo CLI installer
+export PATH="/Users/paymahn/.goldsky/bin:$PATH"
+export PATH="$HOME/.sher/bin:$PATH"
+
+export PATH=/Users/paymahn/.groundcover/bin:${PATH}
