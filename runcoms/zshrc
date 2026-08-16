@@ -279,12 +279,8 @@ export CPPFLAGS="-I/opt/homebrew/opt/libpq/include $CPPFLAGS"
 # Set PKG_CONFIG_PATH for libpq
 export PKG_CONFIG_PATH="/opt/homebrew/opt/libpq/lib/pkgconfig:$PKG_CONFIG_PATH"
 
-# Created by `pipx` on 2025-02-07 20:42:01
-export PATH="$PATH:/Users/paymahn/.local/bin"
-
 # Added by Windsurf
 export PATH="/Users/paymahn/.codeium/windsurf/bin:$PATH"
-export PATH="/Users/paymahn/.foundry/bin:$PATH"
 
 # Linux ~/.local/bin (cross-platform)
 export PATH="$HOME/.local/bin:$PATH"

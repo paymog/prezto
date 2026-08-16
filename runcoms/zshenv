@@ -11,9 +11,7 @@ if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
 fi
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
-export PATH="$PATH:/Users/paymahn/.foundry/bin"
-
-export PATH="$PATH:/Users/paymahn/.foundry/bin"
+export PATH="$PATH:$HOME/.foundry/bin"
 
 # Point non-interactive bash (coding agents spawned by the Paseo daemon inherit
 # this env) at a loader that reproduces the interactive per-directory env hooks
