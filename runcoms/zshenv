@@ -14,3 +14,8 @@ fi
 export PATH="$PATH:/Users/paymahn/.foundry/bin"
 
 export PATH="$PATH:/Users/paymahn/.foundry/bin"
+
+# Point non-interactive bash (coding agents spawned by the Paseo daemon inherit
+# this env) at a loader that reproduces the interactive per-directory env hooks
+# (direnv + sinatra secrets). Interactive zsh is unaffected — it uses ~/.zshrc.
+export BASH_ENV="$HOME/.agent-shell-env.sh"
