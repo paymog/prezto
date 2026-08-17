@@ -296,7 +296,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-source /Users/paymahn/.daytona.completion_script.zsh
+[ -f "$HOME/.daytona.completion_script.zsh" ] && source "$HOME/.daytona.completion_script.zsh"
 
 # Darkbloom
 export PATH="$HOME/.darkbloom/bin:$PATH"
