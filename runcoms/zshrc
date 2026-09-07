@@ -18,6 +18,7 @@ fi
 
 
 
+
 # Customize to your needs...
 
 # vim mode
@@ -48,7 +49,9 @@ alias dd='cd ~/dd'
 #
 alias ubp='kcuc gke_basira-491203_us-east1-b_basira-prod'
 
-source /opt/homebrew/share/google-cloud-sdk/path.zsh.inc
+_gcloud_inc="$(brew --prefix 2>/dev/null)/share/google-cloud-sdk/path.zsh.inc"
+[[ -f "$_gcloud_inc" ]] && source "$_gcloud_inc"
+unset _gcloud_inc
 
 
 # solarize light
@@ -116,7 +119,7 @@ alias dzk="docker compose kill"
 # this is a doozie. The inner command gets the container id of the last run
 # container
 # The rest of this connects to a container and starts bash
-alias clc="docker exec -t -i $(docker ps -aq --last 1) /bin/bash"
+alias clc='docker exec -t -i $(docker ps -aq --last 1) /bin/bash'
 
 # kubernetes
 alias k="kubectl"
@@ -180,8 +183,8 @@ if [[ -s "$NVM_DIR/nvm.sh" ]]; then
 fi
 [[ -s "$NVM_DIR/bash_completion" ]] && . "$NVM_DIR/bash_completion"
 
-# automatically call nvm use when changing dirs
-autoload -U add-zsh-hook
+if typeset -f nvm_find_nvmrc >/dev/null; then
+  autoload -U add-zsh-hook
 
 load-nvmrc() {
   if [[ -n $_nvm_async_pwd ]]; then
@@ -191,20 +194,20 @@ load-nvmrc() {
   local nvmrc_path
   nvmrc_path="$(nvm_find_nvmrc)"
 
-  if [ -n "$nvmrc_path" ]; then
-    local nvmrc_node_version
-    nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+    if [ -n "$nvmrc_path" ]; then
+      local nvmrc_node_version
+      nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
 
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$(nvm version)" ]; then
-      nvm use
+      if [ "$nvmrc_node_version" = "N/A" ]; then
+        nvm install
+      elif [ "$nvmrc_node_version" != "$(nvm version)" ]; then
+        nvm use
+      fi
+    elif [ -n "$(PWD=$OLDPWD nvm_find_nvmrc)" ] && [ "$(nvm version)" != "$(nvm version default)" ]; then
+      echo "Reverting to nvm default version"
+      nvm use default
     fi
-  elif [ -n "$(PWD=$OLDPWD nvm_find_nvmrc)" ] && [ "$(nvm version)" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
-  fi
-}
+  }
 
 add-zsh-hook chpwd load-nvmrc
 if [[ ! -t 0 || ! -t 1 || $TERM == dumb ]]; then
@@ -245,6 +248,7 @@ if [[ -s "$NVM_DIR/nvm.sh" && -t 0 && -t 1 && $TERM != dumb ]]; then
   async_register_callback nvm_startup _nvm_async_ready
   async_job nvm_startup _nvm_async_init
 fi
+fi
 
 
 export PATH=$HOME/go/bin:$HOME/.cargo/bin:$PATH
@@ -260,11 +264,13 @@ export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home"
 
 if [[ -t 0 && -t 1 && $TERM != dumb ]]; then
   _version_managers_init() {
-    pyenv init - --no-rehash
+    if command -v pyenv >/dev/null; then
+      pyenv init - --no-rehash
+      local -a versions
+      versions=("${PYENV_ROOT:-$HOME/.pyenv}"/versions/*(N))
+      (( $#versions )) && pyenv virtualenv-init -
+    fi
     rbenv init - --no-rehash zsh
-    local -a versions
-    versions=("${PYENV_ROOT:-$HOME/.pyenv}"/versions/*(N))
-    (( $#versions )) && pyenv virtualenv-init -
     return 0
   }
   _version_managers_ready() {
@@ -281,10 +287,12 @@ if [[ -t 0 && -t 1 && $TERM != dumb ]]; then
   async_register_callback version_managers _version_managers_ready
   async_job version_managers _version_managers_init
 else
-  eval "$(pyenv init - --no-rehash)"
-  _pyenv_versions=("${PYENV_ROOT:-$HOME/.pyenv}"/versions/*(N))
-  (( $#_pyenv_versions )) && eval "$(pyenv virtualenv-init -)"
-  unset _pyenv_versions
+  if command -v pyenv >/dev/null; then
+    eval "$(pyenv init - --no-rehash)"
+    _pyenv_versions=("${PYENV_ROOT:-$HOME/.pyenv}"/versions/*(N))
+    (( $#_pyenv_versions )) && eval "$(pyenv virtualenv-init -)"
+    unset _pyenv_versions
+  fi
 fi
 export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
 export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
@@ -362,7 +370,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-source /Users/paymahn/.daytona.completion_script.zsh
+[[ -f /Users/paymahn/.daytona.completion_script.zsh ]] && source /Users/paymahn/.daytona.completion_script.zsh
 
 # dcg: warn if hook was silently removed from Claude Code settings
 if command -v dcg &>/dev/null && command -v jq &>/dev/null; then
@@ -398,7 +406,7 @@ omp() {
 }
 
 # direnv — per-directory environment loading (work / personal / project secret scoping)
-eval "$(direnv hook zsh)"
+command -v direnv >/dev/null && eval "$(direnv hook zsh)"
 
 # ~/.secrets.sinatra loads in ANY path containing "sinatra" (checkouts, worktrees,
 # conductor workspaces, ...). direnv owns goldsky/other .envrc trees; when a direnv
@@ -416,6 +424,8 @@ _sinatra_secrets() {
     (( ${#vars} )) && unset ${vars}          # unload sinatra vars when leaving
   fi
 }
+
+autoload -U add-zsh-hook
 add-zsh-hook chpwd _sinatra_secrets
 _sinatra_secrets
 

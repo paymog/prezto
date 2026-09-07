@@ -75,7 +75,11 @@ TMPPREFIX="${TMPDIR%/}/zsh"
 
 # Mac-specific configurations
 if [[ "$OSTYPE" == darwin* ]]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+  if [[ -x /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif [[ -x /usr/local/bin/brew ]]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+  fi
 
   # >>> coursier install directory >>>
   export PATH="$PATH:/Users/paymahn/Library/Application Support/Coursier/bin"
