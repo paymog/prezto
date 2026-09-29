@@ -1,5 +1,6 @@
 # Add deno completions to search path
 if [[ ":$FPATH:" != *":/Users/paymahn/.zsh/completions:"* ]]; then export FPATH="/Users/paymahn/.zsh/completions:$FPATH"; fi
+fpath=(/usr/local/share/zsh-completions ~/.grok/completions/zsh $fpath)
 #
 # Executes commands at the start of an interactive session.
 #
@@ -15,12 +16,9 @@ fi
 # asdf version manager
 [ -f /opt/homebrew/opt/asdf/libexec/asdf.sh ] && . /opt/homebrew/opt/asdf/libexec/asdf.sh
 
-autoload -Uz compinit
-compinit
 
 
 # Customize to your needs...
-fpath=(/usr/local/share/zsh-completions $fpath)
 
 # vim mode
 bindkey -v
@@ -50,7 +48,7 @@ alias dd='cd ~/dd'
 #
 alias ubp='kcuc gke_basira-491203_us-east1-b_basira-prod'
 
-source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
+source /opt/homebrew/share/google-cloud-sdk/path.zsh.inc
 
 
 # solarize light
@@ -171,13 +169,25 @@ function kexec() {
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+if [[ -s "$NVM_DIR/nvm.sh" ]]; then
+  if [[ -t 0 && -t 1 && $TERM != dumb ]]; then
+    . "$NVM_DIR/nvm.sh" --no-use
+  elif [[ -n "$NVM_BIN" && -x "$NVM_BIN/node" && $commands[node] == "$NVM_BIN/node" ]]; then
+    . "$NVM_DIR/nvm.sh" --no-use
+  else
+    . "$NVM_DIR/nvm.sh"
+  fi
+fi
+[[ -s "$NVM_DIR/bash_completion" ]] && . "$NVM_DIR/bash_completion"
 
 # automatically call nvm use when changing dirs
 autoload -U add-zsh-hook
 
 load-nvmrc() {
+  if [[ -n $_nvm_async_pwd ]]; then
+    _nvm_async_pwd=''
+    nvm use --silent default >/dev/null
+  fi
   local nvmrc_path
   nvmrc_path="$(nvm_find_nvmrc)"
 
@@ -197,7 +207,44 @@ load-nvmrc() {
 }
 
 add-zsh-hook chpwd load-nvmrc
-load-nvmrc
+if [[ ! -t 0 || ! -t 1 || $TERM == dumb ]]; then
+  load-nvmrc
+fi
+if [[ -s "$NVM_DIR/nvm.sh" && -t 0 && -t 1 && $TERM != dumb ]]; then
+  _nvm_async_pwd=$PWD
+  _nvm_async_bin=$NVM_BIN
+  _nvm_async_init() {
+    if [[ -n "$NVM_BIN" && -x "$NVM_BIN/node" && $commands[node] == "$NVM_BIN/node" ]]; then
+      nvm use --silent "$(nvm current)" >/dev/null || return
+    else
+      nvm use --silent default >/dev/null || :
+    fi
+    _nvm_async_pwd=''
+    load-nvmrc
+    [[ -n "$NVM_BIN" && -x "$NVM_BIN/node" ]] || return 1
+    print -r -- "$PWD"$'\n'"$NVM_BIN"$'\n'"$NVM_INC"
+  }
+  _nvm_async_ready() {
+    async_unregister_callback nvm_startup
+    async_stop_worker nvm_startup
+    local -a result
+    result=("${(@f)3}")
+    # Ignore stale results after a directory change or a manual Node switch.
+    if (( $2 == 0 && $#result == 3 )) && [[ $result[1] == $_nvm_async_pwd && $NVM_BIN == $_nvm_async_bin ]]; then
+      local version_dir=${result[2]:h}
+      export PATH="$(nvm_change_path "$PATH" /bin "$version_dir")"
+      if (( $+commands[manpath] )); then
+        export MANPATH="$(nvm_change_path "${MANPATH:-$(manpath)}" /share/man "$version_dir")"
+      fi
+      export NVM_BIN=$result[2] NVM_INC=$result[3]
+      rehash
+    fi
+    _nvm_async_pwd=''
+  }
+  async_start_worker nvm_startup -n
+  async_register_callback nvm_startup _nvm_async_ready
+  async_job nvm_startup _nvm_async_init
+fi
 
 
 export PATH=$HOME/go/bin:$HOME/.cargo/bin:$PATH
@@ -211,8 +258,34 @@ export PATH="/opt/homebrew/opt/scala@2.12/bin:$PATH"
 
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home"
 
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+if [[ -t 0 && -t 1 && $TERM != dumb ]]; then
+  _version_managers_init() {
+    pyenv init - --no-rehash
+    rbenv init - --no-rehash zsh
+    local -a versions
+    versions=("${PYENV_ROOT:-$HOME/.pyenv}"/versions/*(N))
+    (( $#versions )) && pyenv virtualenv-init -
+    return 0
+  }
+  _version_managers_ready() {
+    async_unregister_callback version_managers
+    async_stop_worker version_managers
+    if (( $2 == 0 )); then
+      eval "$3" || return
+      if (( $+functions[_pyenv_virtualenv_hook] )); then
+        _pyenv_virtualenv_hook
+      fi
+    fi
+  }
+  async_start_worker version_managers -n
+  async_register_callback version_managers _version_managers_ready
+  async_job version_managers _version_managers_init
+else
+  eval "$(pyenv init - --no-rehash)"
+  _pyenv_versions=("${PYENV_ROOT:-$HOME/.pyenv}"/versions/*(N))
+  (( $#_pyenv_versions )) && eval "$(pyenv virtualenv-init -)"
+  unset _pyenv_versions
+fi
 export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
 export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
 
@@ -224,9 +297,7 @@ function revert-expand-or-complete {
 zle -N expand-or-complete-with-indicator revert-expand-or-complete
 
 
-# https://kubernetes.io/docs/tasks/tools/install-kubectl/
-source <(kubectl completion zsh)
-compdef __start_kubectl k
+compdef _kubectl kubectl k
 
 # ET (Eternal Terminal) autocomplete from SSH config
 _et_hosts() {
@@ -236,7 +307,6 @@ _et_hosts() {
 }
 compdef _et_hosts et
 
-eval "$(pyenv virtualenv-init -)"
 
 unalias rm 2>/dev/null
 
@@ -253,7 +323,9 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export PATH="/opt/homebrew/opt/mysql@8.0/bin:$PATH"
 
-eval "$(rbenv init -)"
+if [[ ! -t 0 || ! -t 1 || $TERM == dumb ]]; then
+  eval "$(rbenv init - --no-rehash)"
+fi
 
 # pnpm
 export PNPM_HOME="/Users/paymahn/Library/pnpm"
@@ -349,8 +421,6 @@ _sinatra_secrets
 
 # >>> grok installer >>>
 export PATH="$HOME/.grok/bin:$PATH"
-fpath=(~/.grok/completions/zsh $fpath)
-autoload -Uz compinit && compinit -C
 # <<< grok installer <<<
 
 # Added by Turbo CLI installer
