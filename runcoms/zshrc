@@ -116,7 +116,7 @@ alias dzk="docker compose kill"
 # this is a doozie. The inner command gets the container id of the last run
 # container
 # The rest of this connects to a container and starts bash
-alias clc="docker exec -t -i $(docker ps -aq --last 1) /bin/bash"
+alias clc='docker exec -it $(docker ps -aq --last 1) /bin/bash'
 
 # kubernetes
 alias k="kubectl"
@@ -198,11 +198,10 @@ load-nvmrc() {
     if [ "$nvmrc_node_version" = "N/A" ]; then
       nvm install
     elif [ "$nvmrc_node_version" != "$(nvm version)" ]; then
-      nvm use
+      nvm use --silent
     fi
   elif [ -n "$(PWD=$OLDPWD nvm_find_nvmrc)" ] && [ "$(nvm version)" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
+    nvm use --silent default
   fi
 }
 
@@ -376,27 +375,6 @@ export DAYTONA_API_URL="https://app.daytona.io/api"
 # Pin Claude Code version — disable auto-update to dodge tmux TUI render bug (re-enable once fixed)
 export DISABLE_AUTOUPDATER=1
 
-# omp memory routing: default = personal local Hindsight (http://127.0.0.1:8888).
-# Under ~/code/goldskyio, inject goldsky-hindsight.yml → prod Hindsight + token.
-omp() {
-  local overlay="$HOME/.omp/goldsky-hindsight.yml"
-  # --config is a root-only flag; subcommands (update, commit, config, ...)
-  # reject it. Only inject the overlay for interactive/agent runs, i.e. when
-  # the first arg is not a management subcommand.
-  case "$1" in
-    acp|agents|auth-broker|auth-gateway|bench|commit|completions|config|dry-balance|gallery|gc|grep|grievances|install|join|models|plugin|read|say|search|setup|shell|ssh|stats|tiny-models|token|ttsr|update|usage|worktree)
-      command omp "$@"
-      ;;
-    *)
-      if [[ -f "$overlay" && "$PWD/" == "$HOME/code/goldskyio/"* ]]; then
-        command omp --config "$overlay" "$@"
-      else
-        command omp "$@"
-      fi
-      ;;
-  esac
-}
-
 # direnv — per-directory environment loading (work / personal / project secret scoping)
 eval "$(direnv hook zsh)"
 
@@ -426,4 +404,6 @@ export PATH="$HOME/.grok/bin:$PATH"
 # Added by Turbo CLI installer
 export PATH="/Users/paymahn/.goldsky/bin:$PATH"
 export PATH="$HOME/.sher/bin:$PATH"
+export PATH="$HOME/.bend/bin:$PATH"
+
 
