@@ -46,12 +46,16 @@ function prompt_sorin_async_callback {
         # No git target detected, flush the git fragment and redisplay the prompt.
         if [[ -n "$_prompt_sorin_git" ]]; then
           _prompt_sorin_git=''
-          zle && zle reset-prompt
+          if [[ -z ${ET_SESSION:-} || -n ${TMUX:-} ]]; then
+            zle && zle reset-prompt
+          fi
         fi
       else
         # Git target detected, update the git fragment and redisplay the prompt.
         _prompt_sorin_git="${_git_target}${_git_post_target}"
-        zle && zle reset-prompt
+        if [[ -z ${ET_SESSION:-} || -n ${TMUX:-} ]]; then
+          zle && zle reset-prompt
+        fi
       fi
       ;;
   esac
@@ -109,7 +113,7 @@ function prompt_sorin_precmd {
 function prompt_sorin_setup {
   setopt LOCAL_OPTIONS
   unsetopt XTRACE KSH_ARRAYS
-  prompt_opts=(cr percent sp subst)
+  prompt_opts=(percent subst)
 
   # Load required functions.
   autoload -Uz add-zsh-hook
@@ -161,8 +165,12 @@ function prompt_sorin_setup {
   _prompt_sorin_git=''
   _prompt_sorin_pwd=''
 
-  # Define prompts.
-  NEWLINE=$'\n'
+  typeset -gA editor_info
+  zstyle -s ':prezto:module:editor:info:keymap:primary' format 'REPLY'
+  editor_info[keymap]=$REPLY
+  unset REPLY
+
+  # Literal \n so reset-prompt counts two lines; ${NEWLINE} under subst does not.
   PROMPT='%F{1}%t%f ${SSH_TTY:+"%F{9}%n%f%F{7}@%f%F{3}%m%f "}%F{4}%d%f '
   if [[ -v IN_NIX_SHELL ]]; then
     PROMPT+='(nix) '
@@ -171,7 +179,7 @@ function prompt_sorin_setup {
   PROMPT+='$python_info[virtualenv]${editor_info[overwrite]}%(?:: %F{1}'
   PROMPT+=${show_return}
   PROMPT+='%f)${VIM:+" %B%F{6}V%f%b"}${_prompt_sorin_git}'
-  PROMPT+='${NEWLINE}%(!. %B%F{1}#%f%b.)${editor_info[keymap]} '
+  PROMPT+=$'\n%(!. %B%F{1}#%f%b.)${editor_info[keymap]} '
   SPROMPT='zsh: correct %F{1}%R%f to %F{2}%r%f [nyae]? '
 }
 

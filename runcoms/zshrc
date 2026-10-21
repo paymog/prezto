@@ -1,6 +1,8 @@
 # Add deno completions to search path
-if [[ ":$FPATH:" != *":/Users/paymahn/.zsh/completions:"* ]]; then export FPATH="/Users/paymahn/.zsh/completions:$FPATH"; fi
-fpath=(/usr/local/share/zsh-completions ~/.grok/completions/zsh $fpath)
+if [[ -d "$HOME/.zsh/completions" && ":$FPATH:" != *":$HOME/.zsh/completions:"* ]]; then
+  export FPATH="$HOME/.zsh/completions:$FPATH"
+fi
+[[ -d "$HOME/.grok/completions/zsh" ]] && fpath=("$HOME/.grok/completions/zsh" $fpath)
 #
 # Executes commands at the start of an interactive session.
 #
@@ -8,18 +10,47 @@ fpath=(/usr/local/share/zsh-completions ~/.grok/completions/zsh $fpath)
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
 
+# ET's PTY ignores CUU, so zle reset-prompt reprints a two-line prompt.
+# Keep sorin; skip redraw widgets and syntax highlighting outside tmux.
+if [[ -z ${ET_SESSION:-} ]]; then
+  if [[ $(command ps -o comm= -p "${PPID:-0}" 2>/dev/null) == *etterminal* ]]; then
+    export ET_SESSION=1
+  fi
+fi
+if [[ -n $TERM ]] && ! infocmp "$TERM" >/dev/null 2>&1; then
+  export TERM=xterm-256color
+fi
+if [[ -n ${ET_SESSION:-} && -z ${TMUX:-} ]]; then
+  zstyle ':prezto:module:syntax-highlighting' color 'no'
+  function _zsh_highlight { : }
+fi
+
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+if [[ -n ${ET_SESSION:-} && -z ${TMUX:-} ]]; then
+  function zle-line-init { (( $+terminfo[smkx] )) && echoti smkx }
+  function zle-line-finish { (( $+terminfo[rmkx] )) && echoti rmkx }
+  function zle-keymap-select { : }
+  function editor-info { : }
+  zle -N zle-line-init
+  zle -N zle-line-finish
+  zle -N zle-keymap-select
+  zle -N editor-info
+fi
+
+: "${HOMEBREW_PREFIX:=$(command brew --prefix 2>/dev/null)}"
+
 # asdf version manager
-[ -f /opt/homebrew/opt/asdf/libexec/asdf.sh ] && . /opt/homebrew/opt/asdf/libexec/asdf.sh
+[[ -n "$HOMEBREW_PREFIX" && -f "$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh" ]] && . "$HOMEBREW_PREFIX/opt/asdf/libexec/asdf.sh"
 
 
 
 
 # Customize to your needs...
+[[ -d "$HOMEBREW_PREFIX/share/zsh-completions" ]] && fpath=("$HOMEBREW_PREFIX/share/zsh-completions" $fpath)
 
 # vim mode
 bindkey -v
@@ -29,8 +60,11 @@ export KEYTIMEOUT=1
 unsetopt CORRECT
 
 # vim default editor
-export VISUAL=$(which nvim)
-export EDITOR=$(which nvim)
+if (( $+commands[nvim] )); then
+  export VISUAL=nvim EDITOR=nvim
+elif (( $+commands[vim] )); then
+  export VISUAL=vim EDITOR=vim
+fi
 
 alias rabc='rabbitmqctl'
 
@@ -143,7 +177,7 @@ alias kdpv="kd pv"
 alias kdpvc="kd pvc"
 
 # envsubst isn't linked when installed with brew
-alias envsubst="/usr/local/opt/gettext/bin/envsubst"
+[[ -x "$HOMEBREW_PREFIX/opt/gettext/bin/envsubst" ]] && alias envsubst="$HOMEBREW_PREFIX/opt/gettext/bin/envsubst"
 
 alias watch='watch '
 
@@ -258,9 +292,13 @@ export PATH="$HOME/.pyenv/bin:$PATH"
 # export PATH="/usr/local/bin:$PATH"
 
 # scala
-export PATH="/opt/homebrew/opt/scala@2.12/bin:$PATH"
+[[ -d "$HOMEBREW_PREFIX/opt/scala@2.12/bin" ]] && export PATH="$HOMEBREW_PREFIX/opt/scala@2.12/bin:$PATH"
 
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home"
+if [[ -d /Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home ]]; then
+  export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home"
+elif [[ -d "$HOMEBREW_PREFIX/opt/openjdk/libexec/openjdk.jdk/Contents/Home" ]]; then
+  export JAVA_HOME="$HOMEBREW_PREFIX/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
+fi
 
 if [[ -t 0 && -t 1 && $TERM != dumb ]]; then
   _version_managers_init() {
@@ -294,8 +332,10 @@ else
     unset _pyenv_versions
   fi
 fi
-export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
-export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
+[[ -d "$HOMEBREW_PREFIX/opt/zlib/lib" ]] && export LDFLAGS="-L$HOMEBREW_PREFIX/opt/zlib/lib $LDFLAGS"
+[[ -d "$HOMEBREW_PREFIX/opt/bzip2/lib" ]] && export LDFLAGS="-L$HOMEBREW_PREFIX/opt/bzip2/lib $LDFLAGS"
+[[ -d "$HOMEBREW_PREFIX/opt/zlib/include" ]] && export CPPFLAGS="-I$HOMEBREW_PREFIX/opt/zlib/include $CPPFLAGS"
+[[ -d "$HOMEBREW_PREFIX/opt/bzip2/include" ]] && export CPPFLAGS="-I$HOMEBREW_PREFIX/opt/bzip2/include $CPPFLAGS"
 
 
 function revert-expand-or-complete {
@@ -305,7 +345,7 @@ function revert-expand-or-complete {
 zle -N expand-or-complete-with-indicator revert-expand-or-complete
 
 
-compdef _kubectl kubectl k
+(( $+commands[kubectl] )) && compdef _kubectl kubectl k
 
 # ET (Eternal Terminal) autocomplete from SSH config
 _et_hosts() {
@@ -328,10 +368,10 @@ source ~/.workrc
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-export PATH="/opt/homebrew/opt/mysql@8.0/bin:$PATH"
+[[ -d "$HOMEBREW_PREFIX/opt/ruby/bin" ]] && export PATH="$HOMEBREW_PREFIX/opt/ruby/bin:$PATH"
+[[ -d "$HOMEBREW_PREFIX/opt/mysql@8.0/bin" ]] && export PATH="$HOMEBREW_PREFIX/opt/mysql@8.0/bin:$PATH"
 
-if [[ ! -t 0 || ! -t 1 || $TERM == dumb ]]; then
+if (( $+commands[rbenv] )) && [[ ! -t 0 || ! -t 1 || $TERM == dumb ]]; then
   eval "$(rbenv init - --no-rehash)"
 fi
 
@@ -348,16 +388,12 @@ export PATH=$PATH:/Users/paymahn/.linkerd2/bin
 export PATH="$HOME/.deno/bin:$PATH"
 
 # Add libpq to PATH
-export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
-
-# Update LDFLAGS to include libpq
-export LDFLAGS="-L/opt/homebrew/opt/libpq/lib $LDFLAGS"
-
-# Update CPPFLAGS to include libpq
-export CPPFLAGS="-I/opt/homebrew/opt/libpq/include $CPPFLAGS"
-
-# Set PKG_CONFIG_PATH for libpq
-export PKG_CONFIG_PATH="/opt/homebrew/opt/libpq/lib/pkgconfig:$PKG_CONFIG_PATH"
+if [[ -d "$HOMEBREW_PREFIX/opt/libpq" ]]; then
+  export PATH="$HOMEBREW_PREFIX/opt/libpq/bin:$PATH"
+  export LDFLAGS="-L$HOMEBREW_PREFIX/opt/libpq/lib $LDFLAGS"
+  export CPPFLAGS="-I$HOMEBREW_PREFIX/opt/libpq/include $CPPFLAGS"
+  export PKG_CONFIG_PATH="$HOMEBREW_PREFIX/opt/libpq/lib/pkgconfig:$PKG_CONFIG_PATH"
+fi
 
 # Added by Windsurf
 export PATH="/Users/paymahn/.codeium/windsurf/bin:$PATH"
@@ -431,6 +467,7 @@ _sinatra_secrets
 
 # >>> grok installer >>>
 export PATH="$HOME/.grok/bin:$PATH"
+
 # <<< grok installer <<<
 
 # Added by Turbo CLI installer
